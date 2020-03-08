@@ -17,7 +17,7 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        fire = Input.GetButtonDown("Fire");
+        fire = Input.GetButton("Fire");
         reload = Input.GetButtonDown("Reload");
 
         horizontalAxis = Input.GetAxis("Horizontal");

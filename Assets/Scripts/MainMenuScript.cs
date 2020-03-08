@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
@@ -42,6 +43,8 @@ public class MainMenuScript : MonoBehaviour
     public void StartGame()
     {
         gameManager.Score = 0;
+
+        SceneManager.LoadScene("GameScene");
     }
 
     private void SetDifficulty()
