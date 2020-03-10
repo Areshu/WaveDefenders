@@ -89,12 +89,12 @@ public class GameSceneController : MonoBehaviour
 
     public void UpdateAmmo(int ammo)
     {
-        ammoText.text = ammo.ToString("00");
+        ammoText.text = "Ammo: " + ammo.ToString("00");
     }
 
     public void UpdateLife(int life)
     {
-        lifeText.text = life.ToString();
+        lifeText.text = "Life: " + life.ToString();
 
         if(life <= 0)
         {
@@ -104,7 +104,7 @@ public class GameSceneController : MonoBehaviour
 
     public void UpdateScore()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = "Score: " + score.ToString();
     }
 
     public void DeadEnemy()
