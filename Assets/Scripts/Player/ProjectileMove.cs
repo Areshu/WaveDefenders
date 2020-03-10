@@ -6,22 +6,14 @@ public class ProjectileMove : MonoBehaviour
 {
     public float speed;
     public float fireRate;
-    public GameObject muzzlePrefab;
+    //public GameObject muzzlePrefab;
     public GameObject HitPrefab;
+    public GameObject HitEnemyPrefab;
 
     private int damage = 25;
 
     public void InitProjectile()
     {
-        if (muzzlePrefab != null)
-        {
-            GameObject muzzleVFX = Instantiate(muzzlePrefab, transform.position, Quaternion.identity);
-            muzzleVFX.transform.forward = transform.forward;
-
-            ParticleSystem muzzlePartcls = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-            Destroy(muzzleVFX, muzzlePartcls.main.duration);
-        }
-
         GetComponent<Rigidbody>().velocity = transform.forward * speed;
     }
 
@@ -33,17 +25,22 @@ public class ProjectileMove : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point;
 
-        if(HitPrefab != null)
-        {
-            GameObject hitVFX = Instantiate(HitPrefab, pos, rot);
 
-            ParticleSystem hitPartcls = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-            Destroy(hitVFX, hitPartcls.main.duration);
-        }
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
             collision.gameObject.GetComponent<Enemy>().SetDamage(damage);
+
+            //Effects
+            GameObject hitVFX = Instantiate(HitEnemyPrefab, pos, rot);
+            ParticleSystem hitPartcls = hitVFX.GetComponent<ParticleSystem>();
+            Destroy(hitVFX, hitPartcls.main.duration);
+        }
+        else
+        {
+            GameObject hitVFX = Instantiate(HitPrefab, pos, rot);
+            ParticleSystem hitPartcls = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+            Destroy(hitVFX, hitPartcls.main.duration);
         }
 
         gameObject.SetActive(false);

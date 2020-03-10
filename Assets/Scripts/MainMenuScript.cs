@@ -14,6 +14,10 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private Text diffExplTxt;
     [SerializeField] private Text scoreTxt;
 
+    [Header("Settings")]
+    [SerializeField] private AudioSource aSource;
+    [SerializeField] private AudioClip clickSound;
+
     private Color32 checkedBtnColor;
     private Color32 uncheckedBtnColor;
 
@@ -30,11 +34,15 @@ public class MainMenuScript : MonoBehaviour
         SetDifficulty();
 
         if (gameManager.HighScore > 0)
-            scoreTxt.text = "Score: " + gameManager.HighScore;
+            scoreTxt.text = "Puntuación más alta: " + gameManager.HighScore;
+
+        aSource.clip = clickSound;
     }
 
     public void SetDifficultyBtn(bool isHard)
     {
+        PlayClickSound();
+
         gameManager.IsHardMode = isHard;
 
         SetDifficulty();
@@ -42,6 +50,8 @@ public class MainMenuScript : MonoBehaviour
 
     public void StartGame()
     {
+        PlayClickSound();
+
         gameManager.Score = 0;
 
         SceneManager.LoadScene("GameScene");
@@ -65,6 +75,11 @@ public class MainMenuScript : MonoBehaviour
             gameManager.GameTime = GameManager.MEDIUM_GAME_TIME;
             gameManager.EnemyLife = GameManager.MEDIUM_ENEMY_LIFE;
         }
+    }
+
+    private void PlayClickSound()
+    {
+        aSource.Play();
     }
 
 }

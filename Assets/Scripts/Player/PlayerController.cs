@@ -46,25 +46,28 @@ public class PlayerController : MonoBehaviour
             isShooting = playerInput.fire;
             reload = playerInput.reload;
 
-            if (isShooting && ammo > 0 && Time.time >= timeToFire)
+            if (!isReloading)
             {
-                //Shoots per second
-                timeToFire = Time.time + 1 / fireRate;
-                projectileSpawner.SpawnVFX();
+                if (isShooting && ammo > 0 && Time.time >= timeToFire)
+                {
+                    //Shoots per second
+                    timeToFire = Time.time + 1 / fireRate;
+                    projectileSpawner.SpawnVFX();
 
-                --ammo;
+                    --ammo;
 
-                sceneController.UpdateAmmo(ammo);
-            }
-            else if (isShooting && ammo <= 0)
-            {
-                Debug.Log("Out of Ammo.");
-            }
+                    sceneController.UpdateAmmo(ammo);
+                }
+                else if (isShooting && ammo <= 0)
+                {
+                    Debug.Log("Out of Ammo.");
+                }
 
-            if (!isReloading && ammo < MAX_AMMO && reload)
-            {
-                isReloading = true;
-                StartCoroutine(LetsReload());
+                if (reload && ammo < MAX_AMMO)
+                {
+                    isReloading = true;
+                    StartCoroutine(LetsReload());
+                }
             }
         }
     }

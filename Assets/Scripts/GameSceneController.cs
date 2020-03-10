@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSceneController : MonoBehaviour
 {
@@ -10,6 +10,9 @@ public class GameSceneController : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text lifeText;
+    [SerializeField] private GameObject gameOverPopup;
+    [SerializeField] private Text gameOverText;
+    [SerializeField] private Text gameOverScoreText;
 
     [Header("Settings")]
     [SerializeField] private int maxEnemies = 10;
@@ -25,6 +28,9 @@ public class GameSceneController : MonoBehaviour
     private GameManager gameManger;
 
     private const int SCORE_PER_DEATH = 5;
+    private const string HOME_SCENE = "MainMenu";
+    private const string YOU_LOOSE = "Has Muerto...";
+    private const string YOU_WIN = "Has Sobrevivido uná Noche Más...";
 
     #region Singleton Setup
     private static GameSceneController instance = null;
@@ -71,6 +77,7 @@ public class GameSceneController : MonoBehaviour
         else
         {
             //GAME OVER
+            GameOver(true);
         }
     }
 
@@ -96,9 +103,10 @@ public class GameSceneController : MonoBehaviour
     {
         lifeText.text = "Life: " + life.ToString();
 
-        if(life <= 0)
+        if (life <= 0)
         {
             // GAME OVER
+            GameOver(false);
         }
     }
 
@@ -129,5 +137,34 @@ public class GameSceneController : MonoBehaviour
         enemy.transform.rotation = spawnPoints[point].rotation;
         enemy.SetActive(true);
         enemy.GetComponent<Enemy>().Init();
+    }
+
+
+    private void GameOver(bool win)
+    {
+        if (win)
+        {
+            gameOverText.text = YOU_WIN;
+            gameOverScoreText.text = "Puntuación: " + score.ToString();
+            CheckHighScore();
+        }
+        else
+        {
+            gameOverText.text = YOU_LOOSE;
+        }
+
+        gameOverPopup.SetActive(true);
+    }
+
+
+    private void CheckHighScore()
+    {
+        if (gameManger.HighScore < score)
+            gameManger.HighScore = score;
+    }
+
+    public void GoToHome()
+    {
+        SceneManager.LoadScene(HOME_SCENE);
     }
 }

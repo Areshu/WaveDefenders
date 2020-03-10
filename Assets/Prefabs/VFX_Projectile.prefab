@@ -9554,10 +9554,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   fireRate: 3
-  muzzlePrefab: {fileID: 4002740483763044107, guid: 33d0b572ea8ff534ea5a89d97fbba742,
-    type: 3}
   HitPrefab: {fileID: 8153724516675493000, guid: f9972c10578b65c4a8ebe7196026a46a,
     type: 3}
+  HitEnemyPrefab: {fileID: 194062, guid: bb954c7832c9a9845b017b284d33fbc8, type: 3}
 --- !u!136 &8194554863792827769
 CapsuleCollider:
   m_ObjectHideFlags: 0
