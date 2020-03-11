@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    
-    [SerializeField]private NavMeshAgent agent;
+
+    [SerializeField] private NavMeshAgent agent;
     [SerializeField]
 
     private Transform player;
@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour
 
         isAlive = true;
         isAttacking = false;
-        
+
         agent.destination = playerPosition;
         agent.isStopped = false;
     }
@@ -34,11 +34,11 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         if (!isAttacking && agent.hasPath && !agent.isStopped && agent.remainingDistance <= 1)
         {
             agent.isStopped = true;
 
-            //Attack
             StartCoroutine(Attack());
         }
         else if (!agent.hasPath)

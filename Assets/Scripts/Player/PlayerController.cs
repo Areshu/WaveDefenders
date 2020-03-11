@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (life > 0)
+        if (life > 0 && !sceneController.IsGameOver())
         {
             horizontal = playerInput.horizontalAxis;
             isShooting = playerInput.fire;
@@ -98,12 +98,11 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator LetsReload()
     {
-        Debug.Log("RELOADING...");
+        sceneController.Reloading();
 
         yield return new WaitForSeconds(3f);
 
         ammo = MAX_AMMO;
-        Debug.Log("RELOADED");
 
         isReloading = false;
 

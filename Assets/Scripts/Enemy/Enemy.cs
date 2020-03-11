@@ -20,6 +20,14 @@ public class Enemy : MonoBehaviour
         ai = GetComponent<EnemyAI>();
     }
 
+    private void Update()
+    {
+        if (sceneController.IsGameOver())
+        {
+            Dead(true);
+        }
+    }
+
     public void Init()
     {
         if (sceneController == null)
@@ -46,9 +54,10 @@ public class Enemy : MonoBehaviour
             Dead();
     }
 
-    private void Dead()
+    private void Dead(bool isendgame = false)
     {
-        sceneController.DeadEnemy();
+        if (!isendgame)
+            sceneController.DeadEnemy();
 
         gameObject.SetActive(false);
     }

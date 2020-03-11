@@ -25,6 +25,8 @@ public class GameSceneController : MonoBehaviour
     private float time;
     private int score;
 
+    private bool isGameOver = false;
+
     private GameManager gameManger;
 
     private const int SCORE_PER_DEATH = 5;
@@ -76,7 +78,6 @@ public class GameSceneController : MonoBehaviour
         }
         else
         {
-            //GAME OVER
             GameOver(true);
         }
     }
@@ -90,29 +91,32 @@ public class GameSceneController : MonoBehaviour
             timeText.text = time.ToString("00");
         }
 
-        //WIN!!!
         Debug.Log("WIN!");
     }
 
     public void UpdateAmmo(int ammo)
     {
-        ammoText.text = "Ammo: " + ammo.ToString("00");
+        ammoText.text = "Munición: " + ammo.ToString("00");
+    }
+
+    public void Reloading()
+    {
+        ammoText.text = "RECARGANDO...";
     }
 
     public void UpdateLife(int life)
     {
-        lifeText.text = "Life: " + life.ToString();
+        lifeText.text = "Vida: " + life.ToString();
 
         if (life <= 0)
         {
-            // GAME OVER
             GameOver(false);
         }
     }
 
     public void UpdateScore()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Puntuación: " + score.ToString();
     }
 
     public void DeadEnemy()
@@ -142,6 +146,8 @@ public class GameSceneController : MonoBehaviour
 
     private void GameOver(bool win)
     {
+        isGameOver = true;
+
         if (win)
         {
             gameOverText.text = YOU_WIN;
@@ -167,4 +173,11 @@ public class GameSceneController : MonoBehaviour
     {
         SceneManager.LoadScene(HOME_SCENE);
     }
+
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
+
+    
 }
