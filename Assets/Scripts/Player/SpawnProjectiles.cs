@@ -19,7 +19,7 @@ public class SpawnProjectiles : MonoBehaviour
 
         GameObject vfx;
 
-        vfx = ObjectPooler.Instance.GetPooledObject("PlayerBullet");
+        vfx = ObjectPooler.Instance.GetPooledObject(GameManager.BULLET_TAG);
         vfx.transform.position = transform.position;
         vfx.transform.rotation = transform.rotation;
         vfx.SetActive(true);

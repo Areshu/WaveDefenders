@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +13,7 @@ public class ObstaclePlacer : MonoBehaviour
     private const float MAX_X_POINT = 17f;
     private const float MIN_Z_POINT = 2f;
     private const float MAX_Z_POINT = 8f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +22,6 @@ public class ObstaclePlacer : MonoBehaviour
 
     private void placeObstacles()
     {
-
         PrepareObstaclesList();
 
         foreach (GameObject obj in obstacles)
@@ -67,11 +66,9 @@ public class ObstaclePlacer : MonoBehaviour
 
         //Set obstacle check radius
         obstacleCheckRadius = SetObstacleCheckRadius(obstacle.GetComponent<NavMeshObstacle>().size);
-        
+
         // El size del navmesh es para escala 1. Esto es por si la escala es diferente.
         obstacleCheckRadius *= obstacle.transform.localScale.x;
-
-        Debug.Log("+++" + obstacle.name + "CheckRadius: " + obstacleCheckRadius);
 
         while (!validPosition && spawnAttempts < maxAttemptsPerObstacle)
         {
@@ -84,10 +81,9 @@ public class ObstaclePlacer : MonoBehaviour
 
             foreach (Collider col in colliders)
             {
-                if (col.tag == "Obstacle")
+                if (col.tag == GameManager.OBSTACLE_TAG)
                 {
                     validPosition = false;
-                    Debug.Log(">>>> " + obstacle.name + "Collision with " + col.gameObject.name);
                 }
             }
         }
@@ -97,7 +93,6 @@ public class ObstaclePlacer : MonoBehaviour
         else
         {
             obstacle.SetActive(false);
-            Debug.LogWarning("Ha superado el numero de intentos para colocar el obstaculo " + obstacle.name + " correctamente.");
         }
     }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,9 +8,11 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [Tooltip("Degrees per second")]
     [SerializeField] private float rotVelocity;
+
     [Header("Shoot Settings")]
     [SerializeField] private float fireRate;
     [SerializeField] private SpawnProjectiles projectileSpawner;
+
     [Header("Others")]
     [SerializeField] private GameSceneController sceneController;
 
@@ -26,8 +27,8 @@ public class PlayerController : MonoBehaviour
     private int life = 100;
 
     private const int MAX_AMMO = 30;
+    private const float RELOAD_TIME = 3f;
 
-    // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -37,7 +38,6 @@ public class PlayerController : MonoBehaviour
         sceneController.UpdateLife(life);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (life > 0 && !sceneController.IsGameOver())
@@ -50,17 +50,13 @@ public class PlayerController : MonoBehaviour
             {
                 if (isShooting && ammo > 0 && Time.time >= timeToFire)
                 {
-                    //Shoots per second
+                    //Disparos por segundo
                     timeToFire = Time.time + 1 / fireRate;
                     projectileSpawner.SpawnVFX();
 
                     --ammo;
 
                     sceneController.UpdateAmmo(ammo);
-                }
-                else if (isShooting && ammo <= 0)
-                {
-                    Debug.Log("Out of Ammo.");
                 }
 
                 if (reload && ammo < MAX_AMMO)
@@ -76,7 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if (horizontal != 0)
         {
-            //Make angular velocity
+            //Velocidad Angular
             angularVelocity = Vector3.up * rotVelocity * Mathf.Deg2Rad * horizontal;
 
             rigidBody.angularVelocity = angularVelocity;
@@ -100,7 +96,7 @@ public class PlayerController : MonoBehaviour
     {
         sceneController.Reloading();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(RELOAD_TIME);
 
         ammo = MAX_AMMO;
 

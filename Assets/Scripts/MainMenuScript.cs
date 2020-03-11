@@ -1,15 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
-    [Header("Buttons")]
-    [SerializeField] private Button hardModeBtn;
-    [SerializeField] private Button mediumModeBtn;
-
     [Header("Texts")]
     [SerializeField] private Text diffExplTxt;
     [SerializeField] private Text scoreTxt;
@@ -18,23 +12,27 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private AudioSource aSource;
     [SerializeField] private AudioClip clickSound;
 
-    private Color32 checkedBtnColor;
-    private Color32 uncheckedBtnColor;
-
     private GameManager gameManager;
 
-    private const string HARD_EXPLAIN = "Duracón la Partida: 45s\nVida de los Enemigos: 150";
-    private const string MEDIUM_EXPLAIN = "Duracón la Partida: 30s\nVida de los Enemigos: 100";
+    #region Texts
 
-    // Start is called before the first frame update
+    private const string HARD_EXPLAIN = "Duración la Partida: 45s\nVida de los Enemigos: 150";
+    private const string MEDIUM_EXPLAIN = "Duración la Partida: 30s\nVida de los Enemigos: 100";
+    private const string HIGH_SCORE_TEXT = "Puntuación Máxima: ";
+    private const string GAME_SCENE = "GameScene";
+
+    #endregion
+
     void Start()
     {
         gameManager = GameManager.Instance;
 
         SetDifficulty();
 
+        gameManager.HighScore = PlayerPrefs.GetInt(GameManager.SAVE_SCORE);
+
         if (gameManager.HighScore > 0)
-            scoreTxt.text = "Puntuación más alta: " + gameManager.HighScore;
+            scoreTxt.text = HIGH_SCORE_TEXT + gameManager.HighScore;
 
         aSource.clip = clickSound;
     }
@@ -54,7 +52,7 @@ public class MainMenuScript : MonoBehaviour
 
         gameManager.Score = 0;
 
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(GAME_SCENE);
     }
 
     private void SetDifficulty()

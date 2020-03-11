@@ -21,12 +21,21 @@ public class GameManager : MonoBehaviour
     private bool isHardMode = false;
     private float gameTime;
     private int enemyLife;
-    //private bool isGameOver = false;
+
+    #endregion
+
+    #region Public Consts
 
     public const int HARD_ENEMY_LIFE = 150;
     public const int MEDIUM_ENEMY_LIFE = 100;
     public const float HARD_GAME_TIME = 45f;
     public const float MEDIUM_GAME_TIME = 30f;
+
+    public const string SAVE_SCORE = "HighScore";
+    public const string ENEMY_TAG = "Enemy";
+    public const string PLAYER_TAG = "Player";
+    public const string BULLET_TAG = "PlayerBullet";
+    public const string OBSTACLE_TAG = "Obstacle";
 
     #endregion
 

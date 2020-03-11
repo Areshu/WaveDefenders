@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ProjectileMove : MonoBehaviour
 {
     public float speed;
     public float fireRate;
-    //public GameObject muzzlePrefab;
     public GameObject HitPrefab;
     public GameObject HitEnemyPrefab;
 
-    private int damage = 25;
+    private const int DAMAGE = 25;
 
     public void InitProjectile()
     {
@@ -27,9 +24,9 @@ public class ProjectileMove : MonoBehaviour
 
 
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag(GameManager.ENEMY_TAG))
         {
-            collision.gameObject.GetComponent<Enemy>().SetDamage(damage);
+            collision.gameObject.GetComponent<Enemy>().SetDamage(DAMAGE);
 
             //Effects
             GameObject hitVFX = Instantiate(HitEnemyPrefab, pos, rot);

@@ -29,10 +29,18 @@ public class GameSceneController : MonoBehaviour
 
     private GameManager gameManger;
 
+    #region Consts
+
     private const int SCORE_PER_DEATH = 5;
     private const string HOME_SCENE = "MainMenu";
     private const string YOU_LOOSE = "Has Muerto...";
     private const string YOU_WIN = "Has Sobrevivido uná Noche Más...";
+    private const string SCORE = "Puntuación: ";
+    private const string LIFE = "Vida: ";
+    private const string AMMO = "Munición: ";
+    private const string RELOADING = "Recargando...";
+
+    #endregion
 
     #region Singleton Setup
     private static GameSceneController instance = null;
@@ -51,7 +59,6 @@ public class GameSceneController : MonoBehaviour
             instance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         gameManger = GameManager.Instance;
@@ -64,21 +71,23 @@ public class GameSceneController : MonoBehaviour
         StartCoroutine(Timer());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (time > 0)
+        if (!isGameOver)
         {
-            if (enemiesInGame < maxEnemies && Time.time >= enemyTimeToSpawn)
+            if (time > 0)
             {
-                //Enemy spawned per spawn Time
-                enemyTimeToSpawn = Time.time + spawnTime;
-                SpawnEnemy();
+                if (enemiesInGame < maxEnemies && Time.time >= enemyTimeToSpawn)
+                {
+                    //Enemy spawned per spawn Time
+                    enemyTimeToSpawn = Time.time + spawnTime;
+                    SpawnEnemy();
+                }
             }
-        }
-        else
-        {
-            GameOver(true);
+            else
+            {
+                GameOver(true);
+            }
         }
     }
 
@@ -90,23 +99,21 @@ public class GameSceneController : MonoBehaviour
             --time;
             timeText.text = time.ToString("00");
         }
-
-        Debug.Log("WIN!");
     }
 
     public void UpdateAmmo(int ammo)
     {
-        ammoText.text = "Munición: " + ammo.ToString("00");
+        ammoText.text = AMMO + ammo.ToString("00");
     }
 
     public void Reloading()
     {
-        ammoText.text = "RECARGANDO...";
+        ammoText.text = RELOADING;
     }
 
     public void UpdateLife(int life)
     {
-        lifeText.text = "Vida: " + life.ToString();
+        lifeText.text = LIFE + life.ToString();
 
         if (life <= 0)
         {
@@ -116,7 +123,7 @@ public class GameSceneController : MonoBehaviour
 
     public void UpdateScore()
     {
-        scoreText.text = "Puntuación: " + score.ToString();
+        scoreText.text = SCORE + score.ToString();
     }
 
     public void DeadEnemy()
@@ -136,7 +143,7 @@ public class GameSceneController : MonoBehaviour
         GameObject enemy;
         int point = GetRandomSpawnPoint();
 
-        enemy = ObjectPooler.Instance.GetPooledObject("Enemy");
+        enemy = ObjectPooler.Instance.GetPooledObject(GameManager.ENEMY_TAG);
         enemy.transform.position = spawnPoints[point].position;
         enemy.transform.rotation = spawnPoints[point].rotation;
         enemy.SetActive(true);
@@ -151,12 +158,13 @@ public class GameSceneController : MonoBehaviour
         if (win)
         {
             gameOverText.text = YOU_WIN;
-            gameOverScoreText.text = "Puntuación: " + score.ToString();
+            gameOverScoreText.text = SCORE + score.ToString();
             CheckHighScore();
         }
         else
         {
             gameOverText.text = YOU_LOOSE;
+            StopAllCoroutines();
         }
 
         gameOverPopup.SetActive(true);
@@ -166,7 +174,10 @@ public class GameSceneController : MonoBehaviour
     private void CheckHighScore()
     {
         if (gameManger.HighScore < score)
+        {
             gameManger.HighScore = score;
+            PlayerPrefs.SetInt(GameManager.SAVE_SCORE, score);
+        }
     }
 
     public void GoToHome()
@@ -178,6 +189,4 @@ public class GameSceneController : MonoBehaviour
     {
         return isGameOver;
     }
-
-    
 }

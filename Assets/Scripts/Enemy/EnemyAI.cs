@@ -19,7 +19,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag(GameManager.PLAYER_TAG).transform;
             playerC = player.gameObject.GetComponent<PlayerController>();
             playerPosition = new Vector3(player.position.x, 0f, player.position.z);
         }
@@ -31,7 +31,6 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = false;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
 
